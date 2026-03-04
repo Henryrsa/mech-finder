@@ -3,6 +3,7 @@ node_modules/
 dist/
 npm-debug.*
 .env
+nul
 firebase.txt
 *.jks
 *.p8
