@@ -44,7 +44,7 @@ Mech-Finder connects travelers with nearby mechanics in real-time. Whether you'r
 - **Location Services**: Expo Location API
 - **Maps**: React Native Maps
 - **State Management**: React Context API / Redux
-- **Backend**: Firebase (Auth, Firestore, Cloud Functions)
+- **Backend**: Firebase (Auth, Realtime Database)
 - **Push Notifications**: Expo Notifications
 - **Storage**: AsyncStorage / SecureStore
 
@@ -148,6 +148,14 @@ Current features implemented:
 - ✅ Basic service request flow
 - ✅ Mechanic registration
 - ✅ Real-time matching (basic)
+
+## Recent Updates
+
+- ✅ Modern premium UI refresh with reusable components and theme tokens
+- ✅ Global typography updates and consistent spacing/radius system
+- ✅ Firebase auth persistence via AsyncStorage
+- ✅ Phone auth split into native/web entrypoints to avoid web bundling issues
+- ✅ Metro config updated for Firebase .cjs module resolution
 
 ## Contact
 
