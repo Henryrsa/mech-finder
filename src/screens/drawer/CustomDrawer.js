@@ -20,11 +20,14 @@ import { UserContext } from "../../context/UserContext";
 import Layout from "../../components/Layout";
 import Dimensions from "../../utilities/Dimensions";
 import { auth, database } from "../../utilities/Firebase";
+import colors from "../../theme/colors";
+import typography from "../../theme/typography";
+import shadows from "../../theme/shadows";
 
 const { SCREEN_WIDTH, DEVICE_HEIGHT, STATUSBAR_HEIGHT } = Dimensions;
 
 export default function CustomDrawer({ navigation }) {
-  const [isSignedIn, setIsSignedIn] = useContext(UserContext);
+  const [, setIsSignedIn] = useContext(UserContext);
 
   const [phoneNumber, setPhoneNumber] = useState("079 Mech-Finder");
   const [fullNames, setFullNames] = useState("Full Names");
@@ -133,7 +136,7 @@ export default function CustomDrawer({ navigation }) {
                 <MaterialCommunityIcons
                   name="account"
                   size={29}
-                  color="white"
+                  color={colors.amber}
                 />
                 <Text style={styles.optionName}>Management </Text>
               </View>
@@ -141,7 +144,7 @@ export default function CustomDrawer({ navigation }) {
                 <MaterialIcons
                   name="keyboard-arrow-right"
                   size={30}
-                  color="white"
+                  color={colors.mist}
                 />
               </View>
             </TouchableOpacity>
@@ -156,14 +159,14 @@ export default function CustomDrawer({ navigation }) {
             style={styles.option}
           >
             <View style={styles.iconTextName}>
-              <MaterialCommunityIcons name="account" size={29} color="white" />
+              <MaterialCommunityIcons name="account" size={29} color={colors.amber} />
               <Text style={styles.optionName}>My Account </Text>
             </View>
             <View style={styles.arrow}>
               <MaterialIcons
                 name="keyboard-arrow-right"
                 size={30}
-                color="white"
+                color={colors.mist}
               />
             </View>
           </TouchableOpacity>
@@ -173,14 +176,14 @@ export default function CustomDrawer({ navigation }) {
             style={styles.option}
           >
             <View style={styles.iconTextName}>
-              <MaterialIcons name="bookmark-border" size={29} color="white" />
+              <MaterialIcons name="bookmark-border" size={29} color={colors.amber} />
               <Text style={styles.optionName}>History</Text>
             </View>
             <View style={styles.arrow}>
               <MaterialIcons
                 name="keyboard-arrow-right"
                 size={30}
-                color="white"
+                color={colors.mist}
               />
             </View>
           </TouchableOpacity>
@@ -190,28 +193,28 @@ export default function CustomDrawer({ navigation }) {
             style={styles.option}
           >
             <View style={styles.iconTextName}>
-              <MaterialIcons name="info-outline" size={29} color="white" />
+              <MaterialIcons name="info-outline" size={29} color={colors.amber} />
               <Text style={styles.optionName}>Help</Text>
             </View>
             <View style={styles.arrow}>
               <MaterialIcons
                 name="keyboard-arrow-right"
                 size={30}
-                color="white"
+                color={colors.mist}
               />
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={_signOut} style={styles.option}>
             <View style={styles.iconTextName}>
-              <MaterialCommunityIcons name="logout" size={29} color="white" />
+              <MaterialCommunityIcons name="logout" size={29} color={colors.amber} />
               <Text style={styles.optionName}>Sign Out</Text>
             </View>
             <View style={styles.arrow}>
               <MaterialIcons
                 name="keyboard-arrow-right"
                 size={30}
-                color="white"
+                color={colors.mist}
               />
             </View>
           </TouchableOpacity>
@@ -219,7 +222,7 @@ export default function CustomDrawer({ navigation }) {
       </ScrollView>
       <TouchableOpacity onPress={incrementCounter} activeOpacity={1}>
         <ImageBackground
-          source={require("../../assets/images/LogoOriginal.jpeg")}
+          source={require("../../assets/images/logo-primary.png")}
           style={[
             styles.bgImageStyle,
             {
@@ -234,7 +237,9 @@ export default function CustomDrawer({ navigation }) {
             },
           ]}
         >
-          <Text style={{ color: "#0000fe" }}>1.04</Text>
+          <Text style={{ color: colors.amber, fontFamily: typography.families.bodyBold }}>
+            1.04
+          </Text>
         </ImageBackground>
       </TouchableOpacity>
     </Layout>
@@ -242,42 +247,44 @@ export default function CustomDrawer({ navigation }) {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "black",
+    backgroundColor: colors.charcoal,
     paddingTop: STATUSBAR_HEIGHT,
     height: "100%",
     width: "100%",
   },
   bgImageStyle: {
-    // backgroundColor: "#eb7a34",
     height: DEVICE_HEIGHT * 0.2,
-    //height: "20%",
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
   nameText: {
-    color: "grey",
+    color: colors.snow,
     fontSize: 28,
-    fontWeight: "bold",
+    fontFamily: typography.families.heading,
+    letterSpacing: 1,
   },
   phoneNumberText: {
-    color: "grey",
+    color: colors.mist,
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: typography.families.bodyMedium,
   },
 
   option: {
-    backgroundColor: "#0000fe",
+    backgroundColor: colors.gunmetal,
     height: DEVICE_HEIGHT < 600 ? 35 : 40,
     width: "98%",
     marginTop: 5,
     flexDirection: "row",
-    borderRadius: 5,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.slate,
+    ...shadows.subtle,
   },
   optionName: {
-    color: "white",
+    color: colors.snow,
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: typography.families.bodySemiBold,
     marginLeft: 5,
   },
   iconTextName: {

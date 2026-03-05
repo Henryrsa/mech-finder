@@ -4,6 +4,8 @@ import { Text, StyleSheet, View } from "react-native";
 import LottieView from "lottie-react-native";
 
 import Dimensions from "../utilities/Dimensions";
+import colors from "../theme/colors";
+import typography from "../theme/typography";
 
 const { SCREEN_WIDTH, DEVICE_HEIGHT } = Dimensions;
 
@@ -19,11 +21,16 @@ export default function LoadingIndicator({ title }) {
           marginTop: 30,
         }}
       />
-      <Text style={{ marginTop: 40 }}>{title}</Text>
+      <Text style={styles.title}>{title}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   loadingContainer: { flex: 1, alignItems: "center" },
+  title: {
+    marginTop: 40,
+    color: colors.mist,
+    fontFamily: typography.families.body,
+  },
 });

@@ -7,32 +7,33 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   View,
-  TextInput,
   ScrollView,
   Vibration,
+  Platform,
 } from "react-native";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import {
-  Ionicons,
-  MaterialIcons,
-  AntDesign,
-  FontAwesome,
-} from "@expo/vector-icons";
 import { Checkbox } from "react-native-paper";
 import { ref, set } from "firebase/database";
 
 import { UserContext } from "../../context/UserContext";
 import { auth, database } from "../../utilities/Firebase";
+ 
 
 import Layout from "../../components/Layout";
 import Dimensions from "../../utilities/Dimensions";
-import genericStyles from "../../utilities/Styles";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import SectionHeader from "../../components/SectionHeader";
+import Card from "../../components/Card";
+import colors from "../../theme/colors";
+import spacing from "../../theme/spacing";
+import typography from "../../theme/typography";
 
-const { SCREEN_WIDTH, DEVICE_HEIGHT } = Dimensions;
+const { SCREEN_WIDTH } = Dimensions;
 
 export default function SignUpForm({ navigation }) {
-  const [isSignedIn, setIsSignedIn] = useContext(UserContext);
+  const [, setIsSignedIn] = useContext(UserContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -117,137 +118,121 @@ export default function SignUpForm({ navigation }) {
     }
   };
 
+
   return (
     <Layout>
       <ScrollView
-        style={{ flex: 1, height: "100%", width: "100%" }}
-        contentContainerStyle={{
-          alignItems: "center",
-          height: "100%",
-          width: "100%",
-        }}
+        style={styles.scroll}
+        contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="always"
       >
         <Image
-          source={require("../../assets/images/LogoOriginal.jpeg")}
-          style={{
-            height: SCREEN_WIDTH * 0.3,
-            width: SCREEN_WIDTH * 0.3,
-            marginVertical: 10,
-          }}
+          source={require("../../assets/images/logo-primary.png")}
+          style={styles.logo}
         />
-        <Text style={styles.headerText}>Registration</Text>
-        <View style={styles.inputFieldHolder}>
-          <View style={styles.iconHolder}>
-            <MaterialIcons name="email" size={24} color="#0000fe" />
-          </View>
-          <TextInput
-            style={styles.inputStyle}
+        <SectionHeader
+          title="Create Account"
+          subtitle="Join the fastest way to get roadside help."
+          style={styles.headerBlock}
+        />
+
+        <Card style={styles.card}>
+          <Input
+            label="Email"
             onChangeText={setEmail}
             value={email}
-            placeholder="Email"
+            placeholder="you@example.com"
             keyboardType="email-address"
             autoCapitalize="none"
           />
-        </View>
-        <View style={styles.inputFieldHolder}>
-          <View style={styles.iconHolder}>
-            <MaterialIcons name="lock" size={24} color="#0000fe" />
-          </View>
-          <TextInput
-            style={styles.inputStyle}
+          <Input
+            label="Password"
             onChangeText={setPassword}
             value={password}
-            placeholder="Password"
+            placeholder="At least 6 characters"
             secureTextEntry
+            style={styles.fieldSpacing}
           />
-        </View>
-        <View style={styles.inputFieldHolder}>
-          <View style={styles.iconHolder}>
-            <Ionicons name="person" size={24} color="#0000fe" />
-          </View>
-          <TextInput
-            style={styles.inputStyle}
+          <Input
+            label="Names"
             onChangeText={onChangeFullName}
             value={fullNames}
-            placeholder="Names"
+            placeholder="Full names"
+            style={styles.fieldSpacing}
           />
-        </View>
-        <View style={styles.inputFieldHolder}>
-          <View style={styles.iconHolder}>
-            <MaterialIcons name="family-restroom" size={24} color="#0000fe" />
-          </View>
-          <TextInput
-            style={styles.inputStyle}
+          <Input
+            label="Surname"
             onChangeText={onChangeSurname}
             value={surname}
             placeholder="Surname"
+            style={styles.fieldSpacing}
           />
-        </View>
-        <View style={styles.inputFieldHolder}>
-          <View style={styles.iconHolder}>
-            <AntDesign name="idcard" size={24} color="#0000fe" />
-          </View>
-          <TextInput
-            style={styles.inputStyle}
+          <Input
+            label="ID or Passport"
             onChangeText={onChangeIdOrPassportNumber}
             value={idOrPassportNumber}
-            placeholder="ID or Passport Number"
+            placeholder="ID or passport number"
+            style={styles.fieldSpacing}
           />
-        </View>
-        <View style={styles.inputFieldHolder}>
-          <View style={styles.iconHolder}>
-            <FontAwesome name="building" size={24} color="#0000fe" />
-          </View>
-          <TextInput
-            style={styles.inputStyle}
+          <Input
+            label="Company Name"
             onChangeText={onChangeCompanyName}
             value={companyName}
-            placeholder="Company Name"
+            placeholder="Company name"
+            style={styles.fieldSpacing}
           />
-        </View>
 
-        <TouchableOpacity
-          onPress={() => {
-            setChecked(!checked);
-          }}
-          style={styles.termsCheckBoxHolder}
-        >
-          <View style={styles.iconHolder}>
+          <TouchableOpacity
+            onPress={() => {
+              setChecked(!checked);
+            }}
+            style={styles.termsRow}
+          >
             <Checkbox
               status={checked ? "checked" : "unchecked"}
-              uncheckedColor="#0000fe"
-              color="#0000fe"
+              uncheckedColor={colors.mist}
+              color={colors.amber}
             />
-          </View>
-          <Text>I agree to the terms and conditions</Text>
-        </TouchableOpacity>
+            <Text style={styles.termsText}>
+              I agree to the terms and conditions
+            </Text>
+          </TouchableOpacity>
+        </Card>
+
         {isLoading ? (
-          <View
-            style={[
-              genericStyles.buttonStyle,
-              {
-                marginVertical: 15,
-                width: SCREEN_WIDTH * 0.7,
-              },
-            ]}
-          >
-            <ActivityIndicator size={"large"} color="white" />
+          <View style={styles.loadingButton}>
+            <ActivityIndicator size="large" color={colors.charcoal} />
           </View>
         ) : (
-          <TouchableOpacity
-            style={[
-              genericStyles.buttonStyle,
-              {
-                marginVertical: 15,
-                width: SCREEN_WIDTH * 0.7,
-              },
-            ]}
+          <Button
+            title="Register"
             onPress={validateForm}
-          >
-            <Text style={styles.buttonText}>Register</Text>
-          </TouchableOpacity>
+            style={styles.primaryButton}
+          />
         )}
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>or</Text>
+          <View style={styles.dividerLine} />
+        </View>
+        <Button
+          title="Continue with Google"
+          variant="secondary"
+          onPress={undefined}
+          style={styles.secondaryButton}
+          disabled
+        />
+        <Button
+          title={
+            Platform.OS === "web"
+              ? "Phone sign-in (mobile only)"
+              : "Continue with Phone"
+          }
+          variant="secondary"
+          onPress={undefined}
+          style={styles.secondaryButton}
+          disabled
+        />
         <TouchableOpacity
           onPress={() => navigation.navigate("SignIn")}
           style={styles.linkButton}
@@ -260,55 +245,92 @@ export default function SignUpForm({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  headerText: {
-    color: "#0000fe",
-    fontWeight: "bold",
-    fontSize: 17,
-    marginVertical: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-
-  inputFieldHolder: {
-    // backgroundColor: "red",
-    height: DEVICE_HEIGHT * 0.05,
-    width: "90%",
-    borderBottomColor: "#0000fe",
-    borderBottomWidth: 1,
-    flexDirection: "row",
-    marginTop: 10,
-  },
-  iconHolder: {
-    // backgroundColor: "green",
-    height: "100%",
-    width: "12%",
-    justifyContent: "center",
-    // alignItems: "center",
-  },
-
-  inputStyle: {
+  scroll: {
     flex: 1,
-    // backgroundColor: "pink",
-    // paddingHorizontal: 5,
-    color: "black",
+    width: "100%",
   },
-
-  termsCheckBoxHolder: {
-    // backgroundColor: "red",
-    height: DEVICE_HEIGHT * 0.05,
-    width: "90%",
-    flexDirection: "row",
-    marginVertical: 10,
+  content: {
     alignItems: "center",
+    paddingBottom: spacing.xl,
+  },
+  logo: {
+    height: SCREEN_WIDTH * 0.24,
+    width: SCREEN_WIDTH * 0.24,
+    marginTop: spacing.lg,
+    marginBottom: spacing.md,
+    borderRadius: 22,
+  },
+  headerBlock: {
+    alignItems: "center",
+    marginBottom: spacing.lg,
+  },
+  card: {
+    width: "90%",
+    padding: spacing.lg,
+  },
+  fieldSpacing: {
+    marginTop: spacing.md,
+  },
+  termsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: spacing.md,
+  },
+  termsText: {
+    color: colors.mist,
+    fontFamily: typography.families.body,
+    fontSize: typography.sizes.sm,
+    flex: 1,
+  },
+  primaryButton: {
+    marginTop: spacing.lg,
+    width: SCREEN_WIDTH * 0.8,
+  },
+  secondaryButton: {
+    marginTop: spacing.sm,
+    width: SCREEN_WIDTH * 0.8,
+  },
+  loadingButton: {
+    marginTop: spacing.lg,
+    width: SCREEN_WIDTH * 0.8,
+    height: 52,
+    borderRadius: 999,
+    backgroundColor: colors.amber,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loadingButtonSecondary: {
+    marginTop: spacing.sm,
+    width: SCREEN_WIDTH * 0.8,
+    height: 52,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: colors.slate,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dividerRow: {
+    marginTop: spacing.lg,
+    flexDirection: "row",
+    alignItems: "center",
+    width: "80%",
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.slate,
+  },
+  dividerText: {
+    color: colors.fog,
+    fontFamily: typography.families.body,
+    marginHorizontal: spacing.sm,
+    fontSize: typography.sizes.sm,
   },
   linkButton: {
-    marginTop: 10,
+    marginTop: spacing.md,
   },
   linkText: {
-    color: "#0000fe",
-    fontWeight: "bold",
+    color: colors.amberGlow,
+    fontFamily: typography.families.bodySemiBold,
   },
 });

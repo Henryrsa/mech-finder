@@ -2,8 +2,9 @@
   "expo": {
     "name": "mech-finder",
     "slug": "mech-finder",
+    "scheme": "mechfinder",
     "version": "1.0.0",
-    "newArchEnabled": false,
+    
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

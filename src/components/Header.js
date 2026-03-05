@@ -9,6 +9,9 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 import Dimensions from "../utilities/Dimensions";
+import colors from "../theme/colors";
+import typography from "../theme/typography";
+import shadows from "../theme/shadows";
 
 const { SCREEN_WIDTH, DEVICE_HEIGHT } = Dimensions;
 
@@ -20,9 +23,9 @@ export default function Header({ navigation, title }) {
         style={styles.backIconHolder}
       >
         {Platform.OS === "android" ? (
-          <Ionicons name="arrow-back-outline" size={30} color="#0000fe" />
+          <Ionicons name="arrow-back-outline" size={30} color={colors.amber} />
         ) : (
-          <Ionicons name="chevron-back" size={30} color="#0000fe" />
+          <Ionicons name="chevron-back" size={30} color={colors.amber} />
         )}
       </TouchableOpacity>
       <Text style={styles.headerText} numberOfLines={1}>
@@ -34,16 +37,15 @@ export default function Header({ navigation, title }) {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: "white",
+    backgroundColor: colors.gunmetal,
     height: DEVICE_HEIGHT * 0.07,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    elevation: 5,
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "grey",
-    shadowOpacity: 0.5,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.slate,
+    ...shadows.subtle,
   },
 
   backIconHolder: {
@@ -56,8 +58,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   headerText: {
-    color: "#0000fe",
-    fontWeight: "bold",
-    fontSize: 20,
+    color: colors.snow,
+    fontFamily: typography.families.bodySemiBold,
+    fontSize: 18,
   },
 });

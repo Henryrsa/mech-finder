@@ -7,18 +7,24 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   View,
-  TextInput,
   Vibration,
+  Platform,
 } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 import Layout from "../../components/Layout";
 import Dimensions from "../../utilities/Dimensions";
-import genericStyles from "../../utilities/Styles";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import SectionHeader from "../../components/SectionHeader";
 import { UserContext } from "../../context/UserContext";
 import { auth } from "../../utilities/Firebase";
+import colors from "../../theme/colors";
+import spacing from "../../theme/spacing";
+import typography from "../../theme/typography";
+ 
 
-const { SCREEN_WIDTH, DEVICE_HEIGHT } = Dimensions;
+const { SCREEN_WIDTH } = Dimensions;
 
 export default function SignIn({ navigation }) {
   const [, setIsSignedIn] = useContext(UserContext);
@@ -66,113 +72,159 @@ export default function SignIn({ navigation }) {
     }
   };
 
+
   return (
     <Layout>
-      <Image
-        source={require("../../assets/images/LogoOriginal.jpeg")}
-        style={{
-          height: SCREEN_WIDTH * 0.4,
-          width: SCREEN_WIDTH * 0.4,
-          marginVertical: 10,
-        }}
-      />
-      <Text style={styles.headerText}>Sign In</Text>
-      <Text style={styles.subHeaderText}>
-        Use your email and password to continue
-      </Text>
-
-      <View style={styles.inputFieldHolder}>
-        <TextInput
-          style={styles.inputStyle}
-          onChangeText={setEmail}
-          value={email}
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCapitalize="none"
+      <View style={styles.container}>
+        <Image
+          source={require("../../assets/images/logo-primary.png")}
+          style={styles.logo}
         />
-      </View>
-      <View style={styles.inputFieldHolder}>
-        <TextInput
-          style={styles.inputStyle}
-          onChangeText={setPassword}
-          value={password}
-          placeholder="Password"
-          secureTextEntry
+        <SectionHeader
+          title="Welcome Back"
+          subtitle="Sign in to get roadside help in minutes."
+          style={styles.headerBlock}
         />
-      </View>
 
-      {isLoading ? (
-        <View
-          style={[
-            genericStyles.buttonStyle,
-            {
-              marginVertical: 15,
-              width: SCREEN_WIDTH * 0.7,
-            },
-          ]}
-        >
-          <ActivityIndicator size={"large"} color="white" />
+        <View style={styles.form}>
+          <Input
+            label="Email"
+            onChangeText={setEmail}
+            value={email}
+            placeholder="you@example.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <Input
+            label="Password"
+            onChangeText={setPassword}
+            value={password}
+            placeholder="Enter your password"
+            secureTextEntry
+            style={styles.inputSpacing}
+          />
         </View>
-      ) : (
-        <TouchableOpacity
-          style={[
-            genericStyles.buttonStyle,
-            {
-              marginVertical: 15,
-              width: SCREEN_WIDTH * 0.7,
-            },
-          ]}
-          onPress={validateForm}
-        >
-          <Text style={styles.buttonText}>Sign In</Text>
-        </TouchableOpacity>
-      )}
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate("SignUpForm")}
-        style={styles.linkButton}
-      >
-        <Text style={styles.linkText}>Create a new account</Text>
-      </TouchableOpacity>
+        {isLoading ? (
+          <View style={styles.loadingButton}>
+            <ActivityIndicator size="large" color={colors.charcoal} />
+          </View>
+        ) : (
+          <Button
+            title="Sign In"
+            onPress={validateForm}
+            style={styles.primaryButton}
+          />
+        )}
+
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>or</Text>
+          <View style={styles.dividerLine} />
+        </View>
+
+        <Button
+          title="Continue with Google"
+          variant="secondary"
+          onPress={undefined}
+          style={styles.secondaryButton}
+          disabled
+        />
+        <Button
+          title={
+            Platform.OS === "web"
+              ? "Phone sign-in (mobile only)"
+              : "Continue with Phone"
+          }
+          variant="secondary"
+          onPress={undefined}
+          style={styles.secondaryButton}
+          disabled
+        />
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SignUpForm")}
+          style={styles.linkButton}
+        >
+          <Text style={styles.linkText}>Create a new account</Text>
+        </TouchableOpacity>
+      </View>
     </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  headerText: {
-    color: "blue",
-    fontWeight: "bold",
-    fontSize: 17,
-    marginVertical: 5,
-  },
-  subHeaderText: {
-    marginHorizontal: 60,
-    marginBottom: 10,
-    textAlign: "center",
-    color: "black",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  inputFieldHolder: {
-    height: DEVICE_HEIGHT * 0.05,
-    width: "90%",
-    borderBottomColor: "#0000fe",
-    borderBottomWidth: 1,
-    flexDirection: "row",
-    marginTop: 10,
-  },
-  inputStyle: {
+  container: {
     flex: 1,
-    color: "black",
+    width: "100%",
+    alignItems: "center",
+    paddingTop: spacing.lg,
+  },
+  logo: {
+    height: SCREEN_WIDTH * 0.28,
+    width: SCREEN_WIDTH * 0.28,
+    marginBottom: spacing.md,
+    borderRadius: 24,
+  },
+  headerBlock: {
+    alignItems: "center",
+    marginBottom: spacing.lg,
+  },
+  form: {
+    width: "88%",
+  },
+  inputSpacing: {
+    marginTop: spacing.sm,
+  },
+  primaryButton: {
+    marginTop: spacing.lg,
+    width: SCREEN_WIDTH * 0.8,
+  },
+  secondaryButton: {
+    marginTop: spacing.sm,
+    width: SCREEN_WIDTH * 0.8,
+  },
+  loadingButton: {
+    marginTop: spacing.lg,
+    width: SCREEN_WIDTH * 0.8,
+    height: 52,
+    borderRadius: 999,
+    backgroundColor: colors.amber,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loadingButtonSecondary: {
+    marginTop: spacing.sm,
+    width: SCREEN_WIDTH * 0.8,
+    height: 52,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: colors.slate,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dividerRow: {
+    marginTop: spacing.lg,
+    flexDirection: "row",
+    alignItems: "center",
+    width: "80%",
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.slate,
+  },
+  dividerText: {
+    color: colors.fog,
+    fontFamily: typography.families.body,
+    marginHorizontal: spacing.sm,
+    fontSize: typography.sizes.sm,
   },
   linkButton: {
-    marginTop: 10,
+    marginTop: spacing.md,
   },
   linkText: {
-    color: "#0000fe",
-    fontWeight: "bold",
+    color: colors.amberGlow,
+    fontFamily: typography.families.bodySemiBold,
   },
 });

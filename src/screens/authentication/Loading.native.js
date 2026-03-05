@@ -7,6 +7,7 @@ import { UserContext } from "../../context/UserContext";
 
 import Dimensions from "../../utilities/Dimensions";
 import { auth } from "../../utilities/Firebase";
+import colors from "../../theme/colors";
 const { STATUSBAR_HEIGHT, SCREEN_WIDTH, DEVICE_HEIGHT } = Dimensions;
 
 export default function Loading({ navigation }) {
@@ -31,7 +32,7 @@ export default function Loading({ navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.logoHolder}>
         <Image
-          source={require("../../assets/images/LogoOriginal.jpeg")}
+          source={require("../../assets/images/logo-primary.png")}
           style={styles.logoImage}
         />
         <LottieView
@@ -51,7 +52,7 @@ export default function Loading({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: colors.charcoal,
     paddingTop: STATUSBAR_HEIGHT,
     alignItems: "center",
   },
